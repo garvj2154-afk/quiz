@@ -3,6 +3,8 @@ from logic import generate_quiz,check_answer,calculate_score
 from utils import get_gemini_model
 st.set_page_config(page_title="AI Quiz Master", page_icon="🧠", layout="centered")
 
+
+
 if "quiz_data" not in st.session_state:
     st.session_state.quiz_data = None
 if "current_q" not in st.session_state:
