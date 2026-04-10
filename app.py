@@ -63,6 +63,8 @@ if st.session_state.quiz_data is None:
     """)
     st.info("Enter a topic in the sidebar and click *Generate Quiz!* to start.")
 
+
+
 # --- Quiz In Progress ---
 elif not st.session_state.quiz_complete:
     questions = st.session_state.quiz_data
