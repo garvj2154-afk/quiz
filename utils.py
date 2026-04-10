@@ -1,0 +1,78 @@
+import os
+import requests
+from dotenv import load_dotenv
+
+
+
+def load_api_key():
+    # load_dotenv(os.path.join(os.path.dirname(__file__),"..",".env"))
+    load_dotenv("C:/Users/deell/OneDrive/Desktop/PYHTON.py/quiz/.env")
+    api_key=os.getenv("GEMINI_API_KEY")
+    return api_key
+
+def get_gemini_model():
+    api_key=load_api_key()
+    return GeminiModel(api_key)
+
+class GeminiModel:
+    def __init__(self, api_key, model="gemma-3-4b-it"):
+        self.api_key = api_key
+        self.model = model
+        self.base_url = "https://generativelanguage.googleapis.com/v1beta"
+
+    def generate_content(self, prompt):
+        """Generate content from a text prompt."""
+        url = f"{self.base_url}/models/{self.model}:generateContent?key={self.api_key}"
+        data = {"contents": [{"parts": [{"text": prompt}]}]}
+        r = requests.post(url, json=data, timeout=60, verify=False)
+        r.raise_for_status()
+        return GeminiResponse(r.json())
+
+    def start_chat(self, history=None):
+        return GeminiChat(self)
+    
+class GeminiChat:
+
+    def __init__(self, model):
+        self.model = model
+        self.history = []
+
+    def send_message(self, message):
+        """Send a message and get a response."""
+        self.history.append({"role": "user", "parts": [{"text": message}]})
+        url = f"{self.model.base_url}/models/{self.model.model}:generateContent?key={self.model.api_key}"
+        data = {"contents": self.history}
+        r = requests.post(url, json=data, timeout=60, verify=False)
+        r.raise_for_status()
+        resp = r.json()
+        text = resp["candidates"][0]["content"]["parts"][0]["text"]
+        self.history.append({"role": "model", "parts": [{"text": text}]})
+        return GeminiResponse(resp)
+
+
+class GeminiResponse:
+    """Simple response wrapper."""
+
+    def __init__(self, data):
+        self._data = data
+        self.text = data["candidates"][0]["content"]["parts"][0]["text"]
+if __name__ == "_main_":
+    # Test 1: API key loading
+    key = load_api_key()
+    print(f"API key loaded: {bool(key)}")
+
+    # Test 2: Model creation
+    model = get_gemini_model()
+    if model:
+        print(f"Model created: {model.model}")
+
+        # Test 3: Single prompt
+        resp = model.generate_content("Say hello in one word")
+        print(f"Response: {resp.text}")
+
+        # Test 4: Chat
+        chat = model.start_chat()
+        reply = chat.send_message("What is 2+2?")
+        print(f"Chat reply: {reply.text}")
+    else:
+        print("No valid API key found. Check your .env file.")
