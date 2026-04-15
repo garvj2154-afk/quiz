@@ -24,7 +24,7 @@ class GeminiModel:
         """Generate content from a text prompt."""
         url = f"{self.base_url}/models/{self.model}:generateContent?key={self.api_key}"
         data = {"contents": [{"parts": [{"text": prompt}]}]}
-        r = requests.post(url, json=data, timeout=60, verify=False)
+        r = requests.post(url, json=data, timeout=60,verify=False)
         r.raise_for_status()
         return GeminiResponse(r.json())
 
