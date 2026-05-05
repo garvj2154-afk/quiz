@@ -617,3 +617,62 @@
 #     print("error:",e)
 # except ValueError:
 #     print("ENTER YOUR TRUE AGE")
+# salary=50000
+# credit_score=850
+# if salary>=30000 and credit_score>=900:
+#     print("Loan approved")
+# elif salary>=25000 and credit_score>=750:
+#     print("Loan approved with conditions")
+# else:
+#     print("Loan rejected")
+# num1=19
+# num2=11
+# op="/"
+# if op=="+":
+#     print("RESULT:",num1+num2)
+# elif op=="-":
+#     print("RESUlT:",num1-num2)
+# elif op=="/":
+#     if num1%2==0:
+#         print("EVEN")
+#     else:
+#         print("ODD")
+# else:
+#     print("INVALID")
+
+# def Calculation_grade(marks):
+#     if marks>80:
+#         return "Grade A"
+#     elif marks>70:
+#         return "Grade B"
+#     elif marks>50:
+#         return "Grade C"
+#     else:
+#         return ("Fail")
+# marks=90
+# print("marks:",marks)
+# print("Grade:",Calculation_grade(marks))
+# def leap_year():
+#     if (year%4==0 and year%100!=0) or (year%400==0):
+#         return "Leap year"
+#     else:
+#         return "Not a leap year"
+# year=100
+# print(leap_year())
+class laptop():
+    def __init__(self,brand,price):
+        self.brand=brand
+        self.price=price
+    def apply_discount(self,percent):
+        discount=self.price*percent/100
+        self.price-=discount
+        print("discount applied:",discount)
+    def display(self):
+        print("BRAND:",self.brand)
+        print("PRICE:",self.price)
+l=laptop("HP",5000)
+l.apply_discount(500)
+l.display()
+
+
+    
